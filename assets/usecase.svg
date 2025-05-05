@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Készült a Microsoft Visio programban, SVG-exportálás usecase.svg Page-1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="8.26772in" height="5.82677in"
+		viewBox="0 0 595.276 419.528" xml:space="preserve" color-interpolation-filters="sRGB" class="st9">
+	<v:documentProperties v:langID="1038" v:metric="true" v:viewMarkup="false">
+		<v:userDefs>
+			<v:ud v:nameU="msvNoAutoConnect" v:prompt="" v:val="VT0(0):26"/>
+		</v:userDefs>
+	</v:documentProperties>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:#1ba1e2;stroke:#ffffff;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5}
+		.st2 {fill:#ffffff;font-family:Segoe UI;font-size:1.00001em}
+		.st3 {fill:#d80073;stroke:#ffffff;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5}
+		.st4 {fill:#d80073;font-family:Segoe UI;font-size:1.00001em}
+		.st5 {font-size:1em}
+		.st6 {stroke:#1897d5;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5}
+		.st7 {fill:none;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5}
+		.st8 {fill:#1ba1e2;font-family:Segoe UI;font-size:1.00001em}
+		.st9 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<v:userDefs>
+			<v:ud v:nameU="msvThemeOrder" v:val="VT0(0):26"/>
+			<v:ud v:nameU="visNavType" v:val="VT0(1):26"/>
+		</v:userDefs>
+		<title>Oldal-1</title>
+		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50394"
+				v:shadowOffsetY="-8.50394"/>
+		<v:layer v:name="Összekötő" v:index="0"/>
+		<g id="shape127-1" v:mID="127" v:groupContext="shape" transform="translate(38.8891,-132.552)">
+			<title>Use Case.127</title>
+			<desc>Manuális adat frissítés</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(998):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="71.0526" cy="398.212" width="142.11" height="42.6316"/>
+			<ellipse cx="71.0526" cy="398.212" rx="71.0526" ry="21.3158" class="st1"/>
+			<text x="12.68" y="401.81" class="st2" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>Manuális adat frissítés</text>		</g>
+		<g id="shape129-4" v:mID="129" v:groupContext="shape" transform="translate(38.8891,-73.8219)">
+			<title>Use Case.129</title>
+			<desc>Offline elérhetőség</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(1666):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="71.0526" cy="398.212" width="142.11" height="42.6316"/>
+			<ellipse cx="71.0526" cy="398.212" rx="71.0526" ry="21.3158" class="st1"/>
+			<text x="20.58" y="401.81" class="st2" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>Offline elérhetőség</text>		</g>
+		<g id="shape94-7" v:mID="94" v:groupContext="shape" transform="translate(260.896,-170.755)">
+			<title>Actor</title>
+			<desc>Felhasználó</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(500):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="17.0079" cy="430.729" width="72.59" height="22.4037"/>
+			<path d="M6.8 419.53 L6.8 384.09 L6.8 398.27 L0 398.27 L0 369.92 L3.4 366.38 L30.61 366.38 L34.02 369.92 L34.02 398.27
+						 L27.21 398.27 L27.21 384.09 L27.21 419.53 L17.01 419.53 L17.01 391.18 L17.01 419.53 L6.8 419.53 ZM24.09
+						 355.75 A7.08661 7.08661 -180 1 0 9.92 355.75 A7.08661 7.08661 -180 1 0 24.09 355.75 Z" class="st3"/>
+			<text x="-13.64" y="434.33" class="st4" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>Felhaszn<tspan
+						class="st5" v:langID="1038">áló</tspan></text>		</g>
+		<g id="shape124-11" v:mID="124" v:groupContext="shape" transform="translate(38.8891,-308.743)">
+			<title>Use Case.124</title>
+			<desc>Időjárás lekérdezése</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(875):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="71.0526" cy="398.212" width="142.11" height="42.6316"/>
+			<ellipse cx="71.0526" cy="398.212" rx="71.0526" ry="21.3158" class="st1"/>
+			<text x="17.57" y="401.81" class="st2" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>Időjárás lekérdezése</text>		</g>
+		<g id="shape126-14" v:mID="126" v:groupContext="shape" transform="translate(38.8891,-191.283)">
+			<title>Use Case.126</title>
+			<desc>Kedvenc városok kezelése</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(992):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="71.0526" cy="398.212" width="142.11" height="42.6316"/>
+			<ellipse cx="71.0526" cy="398.212" rx="71.0526" ry="21.3158" class="st1"/>
+			<text x="26.51" y="394.61" class="st2" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>Kedvenc városok <tspan
+						x="48.81" dy="1.2em" class="st5">kezelése</tspan></text>		</g>
+		<g id="shape128-18" v:mID="128" v:groupContext="shape" transform="translate(38.8891,-250.013)">
+			<title>Use Case.128</title>
+			<desc>Előrejelzés megtekintése</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(968):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="71.0526" cy="398.212" width="142.11" height="42.6316"/>
+			<ellipse cx="71.0526" cy="398.212" rx="71.0526" ry="21.3158" class="st1"/>
+			<text x="6.05" y="401.81" class="st2" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>Előrejelzés megtekintése</text>		</g>
+		<g id="shape133-21" v:mID="133" v:groupContext="shape" v:layerMember="0" transform="translate(260.896,-218.731)">
+			<title>Dinamikus összekötő.133</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(750):26"/>
+			</v:userDefs>
+			<path d="M0 419.53 L-124.18 327.94" class="st6"/>
+		</g>
+		<g id="shape134-24" v:mID="134" v:groupContext="shape" v:layerMember="0" transform="translate(260.896,-212.784)">
+			<title>Dinamikus összekötő.134</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(937):26"/>
+			</v:userDefs>
+			<path d="M0 419.53 L-107.48 377.84" class="st6"/>
+		</g>
+		<g id="shape135-27" v:mID="135" v:groupContext="shape" v:layerMember="0" transform="translate(260.896,-201.286)">
+			<title>Dinamikus összekötő.135</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(984):26"/>
+			</v:userDefs>
+			<path d="M0 413.98 L-80.47 410.91" class="st6"/>
+		</g>
+		<g id="shape136-30" v:mID="136" v:groupContext="shape" v:layerMember="0" transform="translate(260.896,-200.89)">
+			<title>Dinamikus összekötő.136</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(996):26"/>
+			</v:userDefs>
+			<path d="M0 419.53 L-101.67 451.2" class="st6"/>
+		</g>
+		<g id="shape137-33" v:mID="137" v:groupContext="shape" v:layerMember="0" transform="translate(260.896,-194.943)">
+			<title>Dinamikus összekötő.137</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(999):26"/>
+			</v:userDefs>
+			<path d="M0 419.53 L-121.6 499.92" class="st6"/>
+		</g>
+		<g id="shape161-36" v:mID="161" v:groupContext="shape" transform="translate(321.787,-171.221)">
+			<title>Szereplő.21</title>
+			<desc>Rendszer</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(15000):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="17.0079" cy="430.729" width="59.57" height="22.4037"/>
+			<path d="M6.8 419.53 L6.8 384.09 L6.8 398.27 L0 398.27 L0 369.92 L3.4 366.38 L30.61 366.38 L34.02 369.92 L34.02 398.27
+						 L27.21 398.27 L27.21 384.09 L27.21 419.53 L17.01 419.53 L17.01 391.18 L17.01 419.53 L6.8 419.53 ZM24.09
+						 355.75 A7.08661 7.08661 -180 1 0 9.92 355.75 A7.08661 7.08661 -180 1 0 24.09 355.75 Z" class="st3"/>
+			<text x="-7.13" y="434.33" class="st4" v:langID="1038"><v:paragraph v:horizAlign="1"/><v:tabList/>Rendszer</text>		</g>
+		<g id="shape162-39" v:mID="162" v:groupContext="shape" transform="translate(382.677,-243.691)">
+			<title>Használati eset</title>
+			<desc>Adatok frissítése alkalmazás indításakor</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(16000):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="92.126" cy="391.89" width="184.26" height="55.2756"/>
+			<ellipse cx="92.126" cy="391.89" rx="92.126" ry="27.6378" class="st1"/>
+			<text x="18.51" y="388.29" class="st2" v:langID="1038"><v:paragraph v:horizAlign="1"/><v:tabList/>Adatok frissítése alkalmazás <tspan
+						x="63.02" dy="1.2em" class="st5">indításakor</tspan></text>		</g>
+		<g id="shape163-43" v:mID="163" v:groupContext="shape" transform="translate(382.677,-116.415)">
+			<title>Használati eset.163</title>
+			<desc>Háttérben történő frissítés</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(17000):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="92.126" cy="391.89" width="184.26" height="55.2756"/>
+			<ellipse cx="92.126" cy="391.89" rx="92.126" ry="27.6378" class="st1"/>
+			<text x="22.78" y="395.49" class="st2" v:langID="1038"><v:paragraph v:horizAlign="1"/><v:tabList/>Háttérben történő frissítés</text>		</g>
+		<g id="group164-46" transform="translate(355.802,-214.742)" v:mID="164" v:groupContext="group" v:layerMember="0">
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="RelationshipName" v:prompt="" v:val="VT4()"/>
+				<v:ud v:nameU="ShowMulti" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="Identifying" v:prompt="" v:val="VT0(1):26"/>
+				<v:ud v:nameU="DXBegin" v:prompt="" v:val="VT0(0.02362204795363):1"/>
+				<v:ud v:nameU="DYBegin" v:prompt="" v:val="VT0(2.2204460492503E-16):1"/>
+				<v:ud v:nameU="DXEnd" v:prompt="" v:val="VT0(0.023622047953631):1"/>
+				<v:ud v:nameU="DYEnd" v:prompt="" v:val="VT0(0):1"/>
+				<v:ud v:nameU="BeginAngle" v:prompt="" v:val="VT0(9.3998879928152E-15):32"/>
+				<v:ud v:nameU="EndAngle" v:prompt="" v:val="VT0(0):32"/>
+				<v:ud v:nameU="Name" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="ID" v:prompt="" v:val="VT0(1):26"/>
+				<v:ud v:nameU="DXBegin" v:prompt="" v:val="VT0(0.014550906901773):1"/>
+				<v:ud v:nameU="DYBegin" v:prompt="" v:val="VT0(0.0069192053224878):1"/>
+				<v:ud v:nameU="DXEnd" v:prompt="" v:val="VT0(0.014550906901768):1"/>
+				<v:ud v:nameU="DYEnd" v:prompt="" v:val="VT0(0.0069192053224865):1"/>
+				<v:ud v:nameU="BeginAngle" v:prompt="" v:val="VT0(0.44387017419328):32"/>
+				<v:ud v:nameU="EndAngle" v:prompt="" v:val="VT0(0.44387017419329):32"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(18000):26"/>
+			</v:userDefs>
+			<title>Társítás</title>
+			<g id="shape164-47" v:mID="164" v:groupContext="groupContent" v:layerMember="0">
+				<path d="M0 419.53 L69.84 386.32" class="st6"/>
+			</g>
+		</g>
+		<g id="group169-50" transform="translate(355.802,-198.826)" v:mID="169" v:groupContext="group" v:layerMember="0">
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="RelationshipName" v:prompt="" v:val="VT4()"/>
+				<v:ud v:nameU="ShowMulti" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="Identifying" v:prompt="" v:val="VT0(1):26"/>
+				<v:ud v:nameU="DXBegin" v:prompt="" v:val="VT0(0.02362204795363):1"/>
+				<v:ud v:nameU="DYBegin" v:prompt="" v:val="VT0(2.2204460492503E-16):1"/>
+				<v:ud v:nameU="DXEnd" v:prompt="" v:val="VT0(0.023622047953631):1"/>
+				<v:ud v:nameU="DYEnd" v:prompt="" v:val="VT0(0):1"/>
+				<v:ud v:nameU="BeginAngle" v:prompt="" v:val="VT0(9.3998879928152E-15):32"/>
+				<v:ud v:nameU="EndAngle" v:prompt="" v:val="VT0(0):32"/>
+				<v:ud v:nameU="Name" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="ID" v:prompt="" v:val="VT0(1):26"/>
+				<v:ud v:nameU="DXBegin" v:prompt="" v:val="VT0(0.014311721951188):1"/>
+				<v:ud v:nameU="DYBegin" v:prompt="" v:val="VT0(-0.0065873086973589):1"/>
+				<v:ud v:nameU="DXEnd" v:prompt="" v:val="VT0(0.014311721951185):1"/>
+				<v:ud v:nameU="DYEnd" v:prompt="" v:val="VT0(-0.006587308697358):1"/>
+				<v:ud v:nameU="BeginAngle" v:prompt="" v:val="VT0(-0.43136458698535):32"/>
+				<v:ud v:nameU="EndAngle" v:prompt="" v:val="VT0(-0.43136458698537):32"/>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(19000):26"/>
+			</v:userDefs>
+			<title>Társítás.169</title>
+			<g id="shape169-51" v:mID="169" v:groupContext="groupContent" v:layerMember="0">
+				<path d="M0 419.53 L68.7 451.15" class="st6"/>
+			</g>
+		</g>
+		<g id="shape174-54" v:mID="174" v:groupContext="shape" transform="translate(18,-18)">
+			<title>Lap.174</title>
+			<desc>use-case diagram 1.</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visNavOrder" v:val="VT0(20000):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="69.5197" cy="408.898" width="139.04" height="21.2598"/>
+			<rect x="0" y="398.268" width="139.039" height="21.2598" class="st7"/>
+			<text x="16.83" y="412.5" class="st8" v:langID="1038"><v:paragraph v:horizAlign="1"/><v:tabList/>use-case diagram 1.</text>		</g>
+	</g>
+</svg>
