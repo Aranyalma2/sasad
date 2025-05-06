@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.util.Log
+import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
+import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
 
 data class LocationSearchItem(
     val id: Int = 0,
@@ -123,8 +125,8 @@ class SearchViewModel @Inject constructor(
                 )
 
                 // Save weather data
-                // ---weatherDao.insertHourlyWeather(weatherData.toHourlyEntities(locationId))
-                // ---weatherDao.insertDailyWeather(weatherData.toDailyEntities(locationId))
+                weatherDao.insertHourlyWeather(weatherData.toHourlyEntities(locationId))
+                weatherDao.insertDailyWeather(weatherData.toDailyEntities(locationId))
 
             } catch (e: Exception) {
                 // Handle error

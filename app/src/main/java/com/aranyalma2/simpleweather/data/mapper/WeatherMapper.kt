@@ -28,7 +28,8 @@ fun CombinedWeather.toDailyEntities(locationId: Int): List<DailyWeatherEntity> {
         DailyWeatherEntity(
             locationId = locationId,
             time = dailyWeather[i].time,
-            temperature = dailyWeather[i].temperature,
+            temperatureMax = dailyWeather[i].temperatureMax,
+            temperatureMin = dailyWeather[i].temperatureMin,
             windSpeed = dailyWeather[i].windSpeed,
             windDirection = dailyWeather[i].windDirection,
             precipitation = dailyWeather[i].precipitation,
@@ -57,10 +58,11 @@ fun WeatherResponse.toDaily(): List<DailyWeather> {
     return daily.time.indices.map { i ->
         DailyWeather(
             time = daily.time[i],
-            temperature = daily.temperature_2m[i],
-            windSpeed = daily.wind_speed_10m[i],
-            windDirection = daily.wind_direction_10m[i],
-            precipitation = daily.precipitation[i],
+            temperatureMax = daily.temperature_2m_max[i],
+            temperatureMin = daily.temperature_2m_min[i],
+            windSpeed = daily.wind_speed_10m_max[i],
+            windDirection = daily.wind_direction_10m_dominant[i],
+            precipitation = daily.precipitation_sum[i],
             weatherCode = daily.weather_code[i]
         )
     }

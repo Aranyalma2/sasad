@@ -96,10 +96,12 @@ fun SearchScreen(
                                     name = location.name,
                                     country = location.country,
                                     isFavorite = location.isFavorite,
-                                    onFavoriteClick = { viewModel.toggleFavorite(location) },
+                                    onFavoriteClick = {
+                                        viewModel.toggleFavorite(location)
+                                        viewModel.addLocation(location)},
                                     onClick = {
+                                        viewModel.toggleFavorite(location)
                                         viewModel.addLocation(location)
-                                        navigateBack()
                                     }
                                 )
                             }

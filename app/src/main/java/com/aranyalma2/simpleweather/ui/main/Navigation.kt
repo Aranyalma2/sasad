@@ -31,23 +31,21 @@ fun WeatherNavGraph(navController: NavHostController = rememberNavController()) 
             )
         }
 
-                composable(Screen.Search.route) {
-                    SearchScreen(
-                        navigateBack = { navController.popBackStack() },
+        composable(Screen.Search.route) {
+            SearchScreen(
+                navigateBack = { navController.popBackStack() }
+            )
+        }
 
-                    )
-                }
-        /*
-                        composable(
-                            route = Screen.Forecast.route,
-                            arguments = listOf(navArgument("locationId") { type = NavType.IntType })
-                        ) { backStackEntry ->
-                            val locationId = backStackEntry.arguments?.getInt("locationId") ?: 0
-                            ForecastScreen(
-                                locationId = locationId,
-                                onBackClick = { navController.popBackStack() }
-                            )
-                        }
-                         */
+        composable(
+            route = Screen.Forecast.route,
+            arguments = listOf(navArgument("locationId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val locationId = backStackEntry.arguments?.getInt("locationId") ?: 0
+            ForecastScreen(
+                locationId = locationId,
+                onBackPressed = { navController.popBackStack() }
+            )
+        }
     }
 }

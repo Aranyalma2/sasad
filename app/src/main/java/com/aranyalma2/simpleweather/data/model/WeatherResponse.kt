@@ -40,18 +40,20 @@ data class HourlyData(
 
 data class DailyUnits(
     val time: String,
-    val temperature_2m: String,
-    val wind_speed_10m: String,
-    val wind_direction_10m: String,
-    val precipitation: String,
+    val temperature_2m_max: String,
+    val temperature_2m_min: String,
+    val wind_speed_10m_max: String,
+    val wind_direction_10m_dominant: String,
+    val precipitation_sum: String,
     val weather_code: String
 )
 
 data class DailyData(
     val time: List<String>,
-    val temperature_2m: List<Double>,
-    val wind_speed_10m: List<Double>,
-    val wind_direction_10m: List<Int>,
-    val precipitation: List<Double>,
+    val temperature_2m_max: List<Double>,
+    val temperature_2m_min: List<Double>,
+    val wind_speed_10m_max: List<Double>,
+    val wind_direction_10m_dominant: List<Int>,
+    val precipitation_sum: List<Double>,
     val weather_code: List<Int>
 )

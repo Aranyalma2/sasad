@@ -78,12 +78,12 @@ fun HomeScreen(
                 ) {
                     itemsIndexed(uiState.locations) { _, locationWithWeather ->
                         val location = locationWithWeather.location
-                        val mockWeatherCode = 0 // Clear sky
+                        val weatherCode = locationWithWeather.hourly[0].weatherCode
 
                         LocationWeatherCard(
                             cityName = location.name,
                             country = location.country,
-                            weatherCode = mockWeatherCode,
+                            weatherCode = weatherCode,
                             isFavorite = true, // This would be based on actual data
                             onFavoriteClick = { viewModel.toggleFavorite(location.id) },
                             onCardClick = { onNavigateToForecast(location.id) }

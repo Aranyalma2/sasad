@@ -1,5 +1,6 @@
 package com.aranyalma2.simpleweather.data.repository
 
+import android.util.Log
 import com.aranyalma2.simpleweather.data.mapper.toDaily
 import com.aranyalma2.simpleweather.data.mapper.toHourly
 import com.aranyalma2.simpleweather.data.remote.WeatherApiService
@@ -19,6 +20,8 @@ class WeatherRepository @Inject constructor(
             timezone = "auto",
             forecastDays = 1
         )
+
+        Log.d("Weather-response", response.toString())
 
         return CombinedWeather(response.toDaily(), response.toHourly())
     }
