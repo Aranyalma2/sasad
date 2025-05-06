@@ -14,6 +14,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aranyalma2.simpleweather.ui.components.WeatherIcon
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import kotlin.time.TimeSource
 
 @Composable
 fun LocationWeatherCard(
@@ -46,9 +50,12 @@ fun LocationWeatherCard(
                     .height(180.dp) // Height for the weather icon, adjust based on design needs
             ) {
                 // Weather icon filling the width of the box
+                val currentTime = LocalDateTime.now()
+                val isNight = currentTime.hour < 6 || currentTime.hour >= 20
                 WeatherIcon(
                     weatherCode = weatherCode,
-                    modifier = Modifier.fillMaxWidth() // Ensure the icon fills the container
+                    modifier = Modifier.fillMaxWidth(),
+                    isNight = isNight
                 )
             }
 

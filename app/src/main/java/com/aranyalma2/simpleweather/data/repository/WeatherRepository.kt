@@ -18,7 +18,7 @@ class WeatherRepository @Inject constructor(
             daily = "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant",
             hourly = "temperature_2m,wind_speed_10m,wind_direction_10m,relative_humidity_2m,apparent_temperature,precipitation,precipitation_probability,weather_code",
             timezone = "auto",
-            forecastDays = 1
+            forecastDays = 7
         )
 
         Log.d("Weather-response", response.toString())

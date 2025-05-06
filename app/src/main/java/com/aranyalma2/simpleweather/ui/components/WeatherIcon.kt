@@ -15,14 +15,12 @@ import java.time.LocalTime
 @Composable
 fun WeatherIcon(
     weatherCode: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isNight: Boolean = false
 ) {
-    val isNight = false
-
     val iconResId = when (weatherCode) {
         0 -> if (isNight) R.drawable.clear_night else R.drawable.sunny
-        1, 2 -> if (isNight) R.drawable.cloudy_night else R.drawable.cloudy
-        3 -> R.drawable.cloudy
+        1, 2, 3 -> if (isNight) R.drawable.cloudy_night else R.drawable.cloudy
         45, 48 -> R.drawable.fog
         51, 53, 55, 56, 57 -> R.drawable.rainy
         61, 63, 65, 66, 67, 80, 81, 82 -> R.drawable.pouring

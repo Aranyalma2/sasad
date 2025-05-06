@@ -14,6 +14,12 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDailyWeather(daily: List<DailyWeatherEntity>)
 
+    @Query("DELETE FROM hourlyweather WHERE locationId = :locationId")
+    suspend fun deleteHourlyWeatherForLocation(locationId: Int)
+
+    @Query("DELETE FROM dailyweather WHERE locationId = :locationId")
+    suspend fun deleteDailyWeatherForLocation(locationId: Int)
+
     @Transaction
     @Query("SELECT * FROM location WHERE id = :locationId")
     suspend fun getLocationWithWeather(locationId: Long): LocationWithWeather?

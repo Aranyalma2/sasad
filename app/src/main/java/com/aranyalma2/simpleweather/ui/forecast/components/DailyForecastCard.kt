@@ -74,6 +74,15 @@ fun DailyWeatherItem(dailyWeather: DailyWeather) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        Text(
+            text = "${dailyWeather.temperatureMax.toInt()}°C",
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         WeatherIcon(
             weatherCode = dailyWeather.weatherCode
         )
@@ -81,7 +90,7 @@ fun DailyWeatherItem(dailyWeather: DailyWeather) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "${dailyWeather.temperatureMax.toInt()}°",
+            text = "${dailyWeather.temperatureMin.toInt()}°C",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center

@@ -143,8 +143,12 @@ fun CurrentWeatherHeader(uiState: ForecastUiState) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            val dateTime = LocalDateTime.parse(currentWeather.time, DateTimeFormatter.ISO_DATE_TIME)
+            val isNight = dateTime.hour < 6 || dateTime.hour >= 20
+
             WeatherIcon(
-                weatherCode = currentWeather.weatherCode
+                weatherCode = currentWeather.weatherCode,
+                isNight = isNight
             )
 
             Spacer(modifier = Modifier.height(16.dp))

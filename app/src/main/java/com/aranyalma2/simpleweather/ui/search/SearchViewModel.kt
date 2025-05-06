@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aranyalma2.simpleweather.data.local.LocationDao
 import com.aranyalma2.simpleweather.data.local.LocationEntity
-import com.aranyalma2.simpleweather.data.local.WeatherDao
+import com.aranyalma2.simpleweather.domain.repository.WeatherPersistenceRepository
 import com.aranyalma2.simpleweather.data.repository.LocationRepository
 import com.aranyalma2.simpleweather.data.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +17,7 @@ import javax.inject.Inject
 import android.util.Log
 import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
 import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
+import com.aranyalma2.simpleweather.data.model.CombinedWeather
 
 data class LocationSearchItem(
     val id: Int = 0,
@@ -39,7 +40,7 @@ class SearchViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
     private val weatherRepository: WeatherRepository,
     private val locationDao: LocationDao,
-    private val weatherDao: WeatherDao
+    private val weatherDao: WeatherPersistenceRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
@@ -124,9 +125,7 @@ class SearchViewModel @Inject constructor(
                     longitude = location.longitude
                 )
 
-                // Save weather data
-                weatherDao.insertHourlyWeather(weatherData.toHourlyEntities(locationId))
-                weatherDao.insertDailyWeather(weatherData.toDailyEntities(locationId))
+                weatherDao.updateWeatherForLocation(locationId, CombinedWeather(weatherData.dailyWeather, weatherData.hourlyWeather))
 
             } catch (e: Exception) {
                 // Handle error

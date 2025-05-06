@@ -17,6 +17,15 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun HourlyForecastList(hourlyData: List<HourlyWeather>) {
+    // Filter to show only forecasts from now and limit to next 24 hours
+    val currentTime = LocalDateTime.now()
+    val filteredHourlyData = hourlyData
+        .filter {
+            val forecastTime = LocalDateTime.parse(it.time, DateTimeFormatter.ISO_DATE_TIME)
+            forecastTime.isAfter(currentTime) || forecastTime.isEqual(currentTime)
+        }
+        .take(24)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,7 +47,7 @@ fun HourlyForecastList(hourlyData: List<HourlyWeather>) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(horizontal = 8.dp)
             ) {
-                items(hourlyData) { hourlyWeather ->
+                items(filteredHourlyData) { hourlyWeather ->
                     HourlyWeatherItem(hourlyWeather = hourlyWeather)
                 }
             }
@@ -63,14 +72,18 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeather) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        val dateTime = LocalDateTime.parse(hourlyWeather.time, DateTimeFormatter.ISO_DATE_TIME)
+        val isNight = dateTime.hour < 6 || dateTime.hour >= 20
+
         WeatherIcon(
-            weatherCode = hourlyWeather.weatherCode
+            weatherCode = hourlyWeather.weatherCode,
+            isNight = isNight
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "${hourlyWeather.temperature.toInt()}°",
+            text = "${hourlyWeather.temperature.toInt()}°C",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center

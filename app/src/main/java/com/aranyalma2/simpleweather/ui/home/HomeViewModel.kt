@@ -10,10 +10,12 @@ import com.aranyalma2.simpleweather.data.local.WeatherDao
 import com.aranyalma2.simpleweather.data.location.LocationProvider
 import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
 import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
+import com.aranyalma2.simpleweather.data.model.CombinedWeather
 import com.aranyalma2.simpleweather.data.remote.LocationApiService
 import com.aranyalma2.simpleweather.data.remote.WeatherApiService
 import com.aranyalma2.simpleweather.data.repository.LocationRepository
 import com.aranyalma2.simpleweather.data.repository.WeatherRepository
+import com.aranyalma2.simpleweather.domain.repository.WeatherPersistenceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -36,7 +38,7 @@ data class HomeUiState(
 class HomeViewModel @Inject constructor(
     private val weatherApi: WeatherApiService,
     private val locationApi: LocationApiService,
-    private val weatherDao: WeatherDao,
+    private val weatherDao: WeatherPersistenceRepository,
     private val locationDao: LocationDao,
     private val locationProvider: LocationProvider
 ) : ViewModel() {
@@ -98,12 +100,7 @@ class HomeViewModel @Inject constructor(
 
             Log.d("weather", weather.toString())
 
-            // Save hourly and daily weather data to database
-            val hourlyEntities = weather.toHourlyEntities(locationId)
-            val dailyEntities = weather.toDailyEntities(locationId)
-
-            weatherDao.insertHourlyWeather(hourlyEntities)
-            weatherDao.insertDailyWeather(dailyEntities)
+            weatherDao.updateWeatherForLocation(locationId, CombinedWeather(weather.dailyWeather, weather.hourlyWeather))
         } catch (e: Exception) {
             // Log error but continue with other locations
             // In a production app, you might want to retry or notify the user
