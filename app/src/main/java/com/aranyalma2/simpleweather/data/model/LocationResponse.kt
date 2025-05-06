@@ -1,7 +1,7 @@
 package com.aranyalma2.simpleweather.data.model
 
 data class LocationResponse (
-    val result: List<LocationData>
+    val results: List<LocationData>
 )
 
 data class LocationData (

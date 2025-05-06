@@ -4,12 +4,12 @@ import com.aranyalma2.simpleweather.data.local.*
 import com.aranyalma2.simpleweather.data.model.LocationResponse
 
 fun LocationResponse.toLocationEntities(): List<LocationEntity> {
-    return result.indices.map { i ->
+    return results.indices.map { i ->
         LocationEntity(
-            country = result[i].country,
-            name = result[i].name,
-            latitude = result[i].latitude,
-            longitude = result[i].longitude
+            country = results[i].country,
+            name = results[i].name,
+            latitude = results[i].latitude,
+            longitude = results[i].longitude
         )
     }
 }

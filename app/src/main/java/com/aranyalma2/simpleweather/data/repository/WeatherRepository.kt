@@ -4,8 +4,9 @@ import com.aranyalma2.simpleweather.data.mapper.toDaily
 import com.aranyalma2.simpleweather.data.mapper.toHourly
 import com.aranyalma2.simpleweather.data.remote.WeatherApiService
 import com.aranyalma2.simpleweather.data.model.CombinedWeather
+import javax.inject.Inject
 
-class WeatherRepository(
+class WeatherRepository @Inject constructor(
     private val weatherApiService: WeatherApiService,
 ) {
 

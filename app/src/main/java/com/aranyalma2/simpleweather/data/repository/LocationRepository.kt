@@ -1,12 +1,13 @@
 package com.aranyalma2.simpleweather.data.repository
 
+import android.util.Log
 import com.aranyalma2.simpleweather.data.local.LocationEntity
 import com.aranyalma2.simpleweather.data.mapper.toLocationEntities
-import com.aranyalma2.simpleweather.data.model.LocationResponse
 import com.aranyalma2.simpleweather.data.remote.LocationApiService
+import javax.inject.Inject
 
-class LocationRepository (
-    private val locationApiService: LocationApiService,
+class LocationRepository @Inject constructor(
+    private val locationApiService: LocationApiService
 ) {
     suspend fun getLocation(name: String): List<LocationEntity> {
         val response = locationApiService.getLocation(
@@ -15,6 +16,6 @@ class LocationRepository (
             language = "en",
             format = "json"
         )
-        return response.toLocationEntities();
+        return response.toLocationEntities()
     }
 }
