@@ -11,7 +11,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WeatherPersistenceRepository @Inject constructor(
-    private val weatherDao: WeatherDao
+    private val weatherDao: WeatherDao,
+    private var currentLocationWeather: LocationWithWeather
 ) {
     /**
      * Updates the weather data for a specific location by:
@@ -41,5 +42,13 @@ class WeatherPersistenceRepository @Inject constructor(
 
     suspend fun insertLocation(location: LocationEntity): Long {
         return weatherDao.insertLocation(location)
+    }
+
+    fun setCurrentWeather(weather: LocationWithWeather) {
+        currentLocationWeather = weather
+    }
+
+    fun getCurrentWeather(): LocationWithWeather? {
+        return currentLocationWeather
     }
 }

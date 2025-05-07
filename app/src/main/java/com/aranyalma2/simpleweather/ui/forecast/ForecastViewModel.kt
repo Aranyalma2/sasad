@@ -122,6 +122,7 @@ class ForecastViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 // Get current location latitude and longitude from the UI state
+                Log.d("id", locationId.toString())
                 val locationWithWeather = weatherDao.getLocationWithWeather(locationId.toLong())
 
                 if (locationWithWeather != null) {

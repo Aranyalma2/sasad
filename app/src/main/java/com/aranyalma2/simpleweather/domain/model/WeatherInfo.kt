@@ -22,7 +22,3 @@ data class DailyWeather (
     val weatherCode: Int
 )
 
-data class WeatherInfo(
-    val hourlyWeather: List<HourlyWeather>,
-    val dailyWeather: List<DailyWeather>
-)

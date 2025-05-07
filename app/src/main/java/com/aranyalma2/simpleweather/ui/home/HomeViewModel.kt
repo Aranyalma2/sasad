@@ -148,6 +148,8 @@ class HomeViewModel @Inject constructor(
                     daily = dailyEntities
                 )
 
+                weatherDao.setCurrentWeather(currentLocationWithWeather)
+
                 // Update state with current location
                 _uiState.value = _uiState.value.copy(
                     hasCurrentLocation = true,

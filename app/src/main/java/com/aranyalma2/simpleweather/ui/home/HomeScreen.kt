@@ -11,6 +11,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +30,11 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // State for the confirmation dialog
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
+    var locationToDelete by remember { mutableStateOf<Int?>(null) }
+    var locationNameToDelete by remember { mutableStateOf("") }
 
     // Request location permission when the screen is first shown
     PermissionHandler.RequestLocationPermission(
@@ -91,9 +99,14 @@ fun HomeScreen(
                             cityName = location.name,
                             country = location.country,
                             weatherCode = weatherCode,
-                            isFavorite = true, // All saved locations are favorites
+                            isFavorite = true,
                             isCurrentLocation = isCurrentLocation,
-                            onFavoriteClick = { viewModel.toggleFavorite(location.id) },
+                            onFavoriteClick = {
+                                // Show confirmation dialog instead of immediate deletion
+                                locationToDelete = location.id
+                                locationNameToDelete = location.name
+                                showDeleteConfirmation = true
+                            },
                             onCardClick = { onNavigateToForecast(location.id) }
                         )
                     }
@@ -108,6 +121,35 @@ fun HomeScreen(
                 ) {
                     Text(error)
                 }
+            }
+
+            // Delete confirmation dialog
+            if (showDeleteConfirmation && locationToDelete != null) {
+                AlertDialog(
+                    onDismissRequest = {
+                        showDeleteConfirmation = false
+                        locationToDelete = null
+                    },
+                    title = { Text("Remove Location") },
+                    text = { Text("Are you sure you want to remove $locationNameToDelete from your favorites?") },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            locationToDelete?.let { viewModel.toggleFavorite(it) }
+                            showDeleteConfirmation = false
+                            locationToDelete = null
+                        }) {
+                            Text("Remove")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            showDeleteConfirmation = false
+                            locationToDelete = null
+                        }) {
+                            Text("Cancel")
+                        }
+                    }
+                )
             }
         }
     }
