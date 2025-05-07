@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 data class HomeUiState(
@@ -127,8 +128,8 @@ class HomeViewModel @Inject constructor(
             if (location != null) {
                 val currentLocationEntity = LocationEntity(
                     id = CURRENT_LOCATION_ID,
-                    country = location.latitude.toString() + "" + location.longitude.toString(),
-                    name = "Current location",
+                    country = String.format(Locale.US, "%.2f %.2f", location.latitude, location.longitude),
+                    name = "Current",
                     latitude = location.latitude,
                     longitude = location.longitude
                 )

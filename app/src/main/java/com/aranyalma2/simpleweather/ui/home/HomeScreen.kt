@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aranyalma2.simpleweather.ui.home.components.LocationWeatherCard
+import com.aranyalma2.simpleweather.util.PermissionHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +27,14 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Request location permission when the screen is first shown
+    PermissionHandler.RequestLocationPermission(
+        onPermissionGranted = {
+            // Permission granted, fetch current location weather
+            viewModel.refreshWeatherData()
+        }
+    )
 
     Scaffold(
         topBar = {
