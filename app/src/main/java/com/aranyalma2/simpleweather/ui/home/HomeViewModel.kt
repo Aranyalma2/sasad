@@ -62,16 +62,8 @@ class HomeViewModel @Inject constructor(
             try {
                 _uiState.value = _uiState.value.copy(isLoading = true)
 
-                // Try to get current location first
-                if (locationProvider.hasLocationPermission()) {
-                    fetchCurrentLocation()
-                }
-                else {
-                    Log.w("Location", "No permission granted")
-                }
-
-                // Load saved locations from Room database
-                val locations = locationDao.getAllLocation().first()
+                // Load saved locations from Room database using suspend function
+                val locations = locationDao.getAllLocations()
 
                 // If no locations are saved, we could add default ones for first-time users
                 if (locations.isEmpty() && !_uiState.value.hasCurrentLocation) {
@@ -81,7 +73,6 @@ class HomeViewModel @Inject constructor(
                     return@launch
                 }
 
-                // Fetch weather data for all saved locations
                 val locationsWithWeather = mutableListOf<LocationWithWeather>()
 
                 // Add any existing current location to the top of the list
@@ -96,7 +87,7 @@ class HomeViewModel @Inject constructor(
 
                 // Add saved locations
                 for (location in locations) {
-                    val locationWithWeather = weatherDao.getLocationWithWeather(location.id.toLong())
+                    val locationWithWeather = weatherDao.getLocationWithWeather(location.id)
                     locationWithWeather?.let {
                         locationsWithWeather.add(it)
                     }
@@ -129,7 +120,7 @@ class HomeViewModel @Inject constructor(
                 val currentLocationEntity = LocationEntity(
                     id = CURRENT_LOCATION_ID,
                     country = String.format(Locale.US, "%.2f %.2f", location.latitude, location.longitude),
-                    name = "Current",
+                    name = "Local",
                     latitude = location.latitude,
                     longitude = location.longitude
                 )
@@ -150,6 +141,8 @@ class HomeViewModel @Inject constructor(
 
                 weatherDao.setCurrentWeather(currentLocationWithWeather)
 
+                Log.d("curr", currentLocationWithWeather.toString())
+
                 // Update state with current location
                 _uiState.value = _uiState.value.copy(
                     hasCurrentLocation = true,
@@ -166,8 +159,7 @@ class HomeViewModel @Inject constructor(
     private suspend fun fetchAndSaveWeatherForLocation(locationId: Int, location: LocationEntity) {
         try {
             val weather = weatherRepository.getWeather(location.latitude, location.longitude)
-            weatherDao.updateWeatherForLocation(locationId,
-                CombinedWeather(weather.dailyWeather, weather.hourlyWeather))
+            weatherDao.updateWeatherForLocation(locationId, weather)
         } catch (e: Exception) {
             Log.e("HomeViewModel", "Unable to fetch weather for: ${location.name}", e)
         }
@@ -183,7 +175,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 if (download) {
-                    val locations = locationDao.getAllLocation().first()
+                    val locations = locationDao.getAllLocations()
                     refreshWeatherDataForAllLocations(locations)
                 }
 

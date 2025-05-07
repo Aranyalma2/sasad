@@ -1,5 +1,5 @@
 package com.aranyalma2.simpleweather.domain.model
-
+/*
 data class HourlyWeather(
     val time: String,
     val temperature: Double,
@@ -21,4 +21,4 @@ data class DailyWeather (
     val precipitation: Double,
     val weatherCode: Int
 )
-
+*/

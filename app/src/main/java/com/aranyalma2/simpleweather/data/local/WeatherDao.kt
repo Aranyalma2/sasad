@@ -15,10 +15,10 @@ interface WeatherDao {
     suspend fun insertDailyWeather(daily: List<DailyWeatherEntity>)
 
     @Query("DELETE FROM hourlyweather WHERE locationId = :locationId")
-    suspend fun deleteHourlyWeatherForLocation(locationId: Int)
+    suspend fun deleteHourlyWeatherForLocation(locationId: Long)
 
     @Query("DELETE FROM dailyweather WHERE locationId = :locationId")
-    suspend fun deleteDailyWeatherForLocation(locationId: Int)
+    suspend fun deleteDailyWeatherForLocation(locationId: Long)
 
     @Transaction
     @Query("SELECT * FROM location WHERE id = :locationId")

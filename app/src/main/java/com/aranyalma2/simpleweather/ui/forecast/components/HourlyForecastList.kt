@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.aranyalma2.simpleweather.domain.model.HourlyWeather
+import com.aranyalma2.simpleweather.data.model.HourlyWeather
 import com.aranyalma2.simpleweather.ui.components.WeatherIcon
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -22,9 +22,9 @@ fun HourlyForecastList(hourlyData: List<HourlyWeather>) {
     val filteredHourlyData = hourlyData
         .filter {
             val forecastTime = LocalDateTime.parse(it.time, DateTimeFormatter.ISO_DATE_TIME)
-            forecastTime.isAfter(currentTime) || forecastTime.isEqual(currentTime)
+            !forecastTime.isBefore(currentTime.withMinute(0).withSecond(0).withNano(0))
         }
-        .take(24)
+        .take(25)
 
     Card(
         modifier = Modifier
@@ -77,7 +77,8 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeather) {
 
         WeatherIcon(
             weatherCode = hourlyWeather.weatherCode,
-            isNight = isNight
+            isNight = isNight,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -92,7 +93,7 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeather) {
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "${hourlyWeather.precipitationProbability}%",
+            text = "${hourlyWeather.precipitation} mm",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
             textAlign = TextAlign.Center

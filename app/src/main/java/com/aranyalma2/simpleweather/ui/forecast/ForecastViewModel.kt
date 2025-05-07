@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aranyalma2.simpleweather.data.local.LocationWithWeather
 import com.aranyalma2.simpleweather.data.local.WeatherDao
+import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
+import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
 import com.aranyalma2.simpleweather.data.model.CombinedWeather
 import com.aranyalma2.simpleweather.data.repository.WeatherRepository
-import com.aranyalma2.simpleweather.domain.model.DailyWeather
-import com.aranyalma2.simpleweather.domain.model.HourlyWeather
+import com.aranyalma2.simpleweather.data.model.DailyWeather
+import com.aranyalma2.simpleweather.data.model.HourlyWeather
+import com.aranyalma2.simpleweather.domain.repository.WeatherPersistenceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +32,7 @@ data class ForecastUiState(
 
 @HiltViewModel
 class ForecastViewModel @Inject constructor(
-    private val weatherDao: WeatherDao,
+    private val weatherDao: WeatherPersistenceRepository,
     private val weatherRepository: WeatherRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -51,7 +54,11 @@ class ForecastViewModel @Inject constructor(
     private fun loadWeatherForLocation(locationId: Int) {
         viewModelScope.launch {
             try {
-                val locationWithWeather = weatherDao.getLocationWithWeather(locationId.toLong())
+                val locationWithWeather: LocationWithWeather? = if (locationId == -1) {
+                    weatherDao.getCurrentWeather()
+                } else {
+                    weatherDao.getLocationWithWeather(locationId)
+                }
 
                 if (locationWithWeather != null) {
                     processLocationData(locationWithWeather)
@@ -122,20 +129,34 @@ class ForecastViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 // Get current location latitude and longitude from the UI state
-                Log.d("id", locationId.toString())
-                val locationWithWeather = weatherDao.getLocationWithWeather(locationId.toLong())
+                val locationWithWeather: LocationWithWeather? = if (locationId == -1) {
+                    weatherDao.getCurrentWeather()
+                } else {
+                    weatherDao.getLocationWithWeather(locationId)
+                }
 
                 if (locationWithWeather != null) {
                     val location = locationWithWeather.location
 
                     // Fetch fresh weather data from API
-                    val freshWeather = weatherRepository.getWeather(
+                    val freshWeatherData = weatherRepository.getWeather(
                         latitude = location.latitude,
                         longitude = location.longitude
                     )
 
                     // Update local database with new weather data
-                    updateLocalWeatherData(location.id, freshWeather)
+                    if (locationId == -1) {
+                        val hourlyEntities = freshWeatherData.toHourlyEntities(locationId)
+                        val dailyEntities = freshWeatherData.toDailyEntities(locationId)
+                        val tempEntry = LocationWithWeather(
+                            location = location,
+                            hourly = hourlyEntities,
+                            daily = dailyEntities
+                        )
+                        weatherDao.setCurrentWeather(tempEntry)
+                    } else {
+                        weatherDao.updateWeatherForLocation(locationId, freshWeatherData)
+                    }
 
                     // Reload data from database to get the updated weather
                     loadWeatherForLocation(location.id)
@@ -152,11 +173,5 @@ class ForecastViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private suspend fun updateLocalWeatherData(locationId: Int, weatherData: CombinedWeather) {
-        // This would involve converting the CombinedWeather to entities
-        // and inserting them into the database
-        // Implementation would depend on your mapper functions
     }
 }

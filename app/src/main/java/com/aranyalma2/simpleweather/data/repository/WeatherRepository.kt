@@ -21,8 +21,6 @@ class WeatherRepository @Inject constructor(
             forecastDays = 7
         )
 
-        Log.d("Weather-response", response.toString())
-
         return CombinedWeather(response.toDaily(), response.toHourly())
     }
 }

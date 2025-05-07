@@ -1,10 +1,11 @@
 package com.aranyalma2.simpleweather.ui.forecast
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.aranyalma2.simpleweather.ui.components.WeatherIcon
+import com.aranyalma2.simpleweather.ui.components.WeatherIconBlurred
 import com.aranyalma2.simpleweather.ui.forecast.components.DailyForecastCard
 import com.aranyalma2.simpleweather.ui.forecast.components.HourlyForecastList
 import com.aranyalma2.simpleweather.ui.forecast.components.WeatherStat
@@ -40,7 +41,7 @@ fun ForecastScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
@@ -52,7 +53,11 @@ fun ForecastScreen(
                             contentDescription = "Refresh"
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             )
         }
     ) { paddingValues ->
@@ -123,49 +128,64 @@ fun CurrentWeatherHeader(uiState: ForecastUiState) {
         val dateTime = LocalDateTime.parse(currentWeather.time, DateTimeFormatter.ISO_DATE_TIME)
         val formattedDate = dateTime.format(DateTimeFormatter.ofPattern("EEEE, MMM d"))
 
-        Column(
+        val currentTime = LocalDateTime.now()
+        val isNight = currentTime.hour < 6 || currentTime.hour >= 20
+
+        val temperatureText = "${currentWeather.temperature.toInt()}°C"
+        val weatherDescription = getWeatherDescription(currentWeather.weatherCode)
+
+        // Choose appropriate text color based on time (simple day/night logic)
+        val textColor = if (isNight) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .height(400.dp), // total height of the header
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "${uiState.locationName}, ${uiState.country}",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = formattedDate,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            val dateTime = LocalDateTime.parse(currentWeather.time, DateTimeFormatter.ISO_DATE_TIME)
-            val isNight = dateTime.hour < 6 || dateTime.hour >= 20
-
-            WeatherIcon(
+            // Centered weather icon (large, not stretched)
+            WeatherIconBlurred(
                 weatherCode = currentWeather.weatherCode,
-                isNight = isNight
+                isNight = isNight,
+                modifier = Modifier.size(400.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            // Middle section (temperature and weather description)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = temperatureText,
+                    fontSize = 64.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor
+                )
+                Text(
+                    text = weatherDescription,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge.copy(color = textColor)
+                )
+            }
 
-            Text(
-                text = "${currentWeather.temperature.toInt()}°C",
-                fontSize = 48.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = getWeatherDescription(currentWeather.weatherCode),
-                style = MaterialTheme.typography.bodyLarge
-            )
+            // Overlayed text content
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                    Text(
+                        text = "${uiState.locationName}, ${uiState.country}",
+                        style = MaterialTheme.typography.titleLarge.copy(color = textColor),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = formattedDate,
+                        style = MaterialTheme.typography.bodyMedium.copy(color = textColor)
+                    )
+            }
         }
     }
 }
+
 
 @Composable
 fun ErrorMessage(

@@ -18,6 +18,7 @@ import android.util.Log
 import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
 import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
 import com.aranyalma2.simpleweather.data.model.CombinedWeather
+import com.aranyalma2.simpleweather.ui.home.HomeViewModel.Companion.CURRENT_LOCATION_ID
 
 data class LocationSearchItem(
     val id: Int = 0,
@@ -65,14 +66,24 @@ class SearchViewModel @Inject constructor(
 
                 val locationEntities = locationRepository.getLocation(query)
 
+                // Get all saved locations to determine favorites
+                val savedLocations = locationDao.getAllLocations()
+
                 val locationItems = locationEntities.map { entity ->
+                    val isFavorite = savedLocations.any {
+                        it.name == entity.name &&
+                                it.country == entity.country &&
+                                it.latitude == entity.latitude &&
+                                it.longitude == entity.longitude
+                    }
+
                     LocationSearchItem(
                         id = entity.id,
                         name = entity.name,
                         country = entity.country,
                         latitude = entity.latitude,
                         longitude = entity.longitude,
-                        isFavorite = false
+                        isFavorite = isFavorite
                     )
                 }
 
@@ -102,6 +113,9 @@ class SearchViewModel @Inject constructor(
             }
         }
 
+        if (location.isFavorite != true) addLocation(location) else removeLocation(location)
+        Log.d("Add to fav", location.isFavorite.toString())
+
         _uiState.update { it.copy(locations = updatedLocations) }
     }
 
@@ -125,7 +139,7 @@ class SearchViewModel @Inject constructor(
                     longitude = location.longitude
                 )
 
-                weatherDao.updateWeatherForLocation(locationId, CombinedWeather(weatherData.dailyWeather, weatherData.hourlyWeather))
+                weatherDao.updateWeatherForLocation(locationId, weatherData)
 
             } catch (e: Exception) {
                 // Handle error
@@ -133,4 +147,28 @@ class SearchViewModel @Inject constructor(
             }
         }
     }
+
+    fun removeLocation(location: LocationSearchItem) {
+        viewModelScope.launch {
+            try {
+                val target = locationDao.findByNameCountryLatLng(
+                    location.name,
+                    location.country,
+                    location.latitude,
+                    location.longitude
+                )
+
+                target?.let { entity ->
+                    weatherDao.deleteHourlyWeatherForLocation(entity.id)
+                    weatherDao.deleteDailyWeatherForLocation(entity.id)
+                    locationDao.deleteLocation(entity.id)
+                }
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error removing location: ${e.localizedMessage}")
+            }
+        }
+    }
+
+
+
 }

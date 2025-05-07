@@ -12,8 +12,17 @@ interface LocationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(location: LocationEntity): Long
 
-    @Query("SELECT * FROM location ORDER BY id DESC")
-    fun getAllLocation(): Flow<List<LocationEntity>>
+    @Query("SELECT * FROM location")
+    suspend fun getAllLocations(): List<LocationEntity>
+
+    @Query("SELECT * FROM location WHERE name = :name AND country = :country AND latitude = :latitude AND longitude = :longitude LIMIT 1")
+    suspend fun findByNameCountryLatLng(
+        name: String,
+        country: String,
+        latitude: Double,
+        longitude: Double
+    ): LocationEntity?
+
 
     @Query("DELETE FROM location WHERE id = :locationId")
     suspend fun deleteLocation(locationId: Int)

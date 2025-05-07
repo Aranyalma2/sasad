@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.aranyalma2.simpleweather.domain.model.DailyWeather
+import com.aranyalma2.simpleweather.data.model.DailyWeather
 import com.aranyalma2.simpleweather.ui.components.WeatherIcon
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -84,7 +84,8 @@ fun DailyWeatherItem(dailyWeather: DailyWeather) {
         Spacer(modifier = Modifier.height(8.dp))
 
         WeatherIcon(
-            weatherCode = dailyWeather.weatherCode
+            weatherCode = dailyWeather.weatherCode,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -93,6 +94,15 @@ fun DailyWeatherItem(dailyWeather: DailyWeather) {
             text = "${dailyWeather.temperatureMin.toInt()}°C",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = "${dailyWeather.precipitation} mm",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
         )
 

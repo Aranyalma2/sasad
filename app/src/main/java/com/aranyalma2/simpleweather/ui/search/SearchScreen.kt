@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -35,7 +36,7 @@ fun SearchScreen(
                 navigationIcon = {
                     IconButton(onClick = navigateBack) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Navigate back"
                         )
                     }
@@ -97,11 +98,9 @@ fun SearchScreen(
                                     country = location.country,
                                     isFavorite = location.isFavorite,
                                     onFavoriteClick = {
-                                        viewModel.toggleFavorite(location)
-                                        viewModel.addLocation(location)},
+                                        viewModel.toggleFavorite(location) },
                                     onClick = {
                                         viewModel.toggleFavorite(location)
-                                        viewModel.addLocation(location)
                                     }
                                 )
                             }
