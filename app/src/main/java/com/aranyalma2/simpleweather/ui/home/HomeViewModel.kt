@@ -108,12 +108,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun refreshWeatherData() {
+    fun refreshWeatherData(download: Boolean = true) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                val locations = locationDao.getAllLocation().first()
-                refreshWeatherDataForAllLocations(locations)
+                if (download) {
+                    val locations = locationDao.getAllLocation().first()
+                    refreshWeatherDataForAllLocations(locations)
+                }
 
                 // Reload data from database with fresh weather
                 loadSavedLocations()
@@ -133,13 +135,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun toggleFavorite(locationId: Int) {
-        // In a real app, this would update a favorite field in the location entity
-        // For now this is just a placeholder as the database schema doesn't have a favorite field
-        viewModelScope.launch {
-            // This would be implemented with a dao method like:
-            // locationDao.toggleFavorite(locationId)
-            // Then we would reload the data
-        }
+        deleteLocation(locationId)
+        refreshWeatherData(false)
     }
 
     fun addNewLocation(query: String) {
