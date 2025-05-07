@@ -7,6 +7,8 @@ import com.aranyalma2.simpleweather.data.local.LocationDao
 import com.aranyalma2.simpleweather.data.local.LocationEntity
 import com.aranyalma2.simpleweather.data.local.LocationWithWeather
 import com.aranyalma2.simpleweather.data.location.LocationProvider
+import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
+import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
 import com.aranyalma2.simpleweather.data.model.CombinedWeather
 import com.aranyalma2.simpleweather.data.model.LocationData
 import com.aranyalma2.simpleweather.data.model.LocationResponse
@@ -62,6 +64,9 @@ class HomeViewModel @Inject constructor(
                 // Try to get current location first
                 if (locationProvider.hasLocationPermission()) {
                     fetchCurrentLocation()
+                }
+                else {
+                    Log.w("Location", "No permission granted")
                 }
 
                 // Load saved locations from Room database
@@ -120,48 +125,35 @@ class HomeViewModel @Inject constructor(
         try {
             val location = locationProvider.getCurrentLocation()
             if (location != null) {
-                // Get location name from coordinates using reverse geocoding
-                val response = locationApi.getLocation(
-                    name = "",
-                    count = 1,
-                    language = "en",
-                    format = "json",
+                val currentLocationEntity = LocationEntity(
+                    id = CURRENT_LOCATION_ID,
+                    country = location.latitude.toString() + "" + location.longitude.toString(),
+                    name = "Current location",
                     latitude = location.latitude,
                     longitude = location.longitude
                 )
 
-                if (response.results.isNotEmpty()) {
-                    val locationData = response.results.first()
-                    val currentLocationEntity = LocationEntity(
-                        id = CURRENT_LOCATION_ID,
-                        country = locationData.country,
-                        name = locationData.name,
-                        latitude = locationData.latitude,
-                        longitude = locationData.longitude
-                    )
+                // Get weather for current location
+                val weather = weatherRepository.getWeather(location.latitude, location.longitude)
 
-                    // Get weather for current location
-                    val weather = weatherRepository.getWeather(location.latitude, location.longitude)
+                // Convert to entities
+                val hourlyEntities = weather.toHourlyEntities(CURRENT_LOCATION_ID)
+                val dailyEntities = weather.toDailyEntities(CURRENT_LOCATION_ID)
 
-                    // Convert to entities
-                    val hourlyEntities = weather.toHourlyEntities(CURRENT_LOCATION_ID)
-                    val dailyEntities = weather.toDailyEntities(CURRENT_LOCATION_ID)
+                // Create LocationWithWeather for current location
+                val currentLocationWithWeather = LocationWithWeather(
+                    location = currentLocationEntity,
+                    hourly = hourlyEntities,
+                    daily = dailyEntities
+                )
 
-                    // Create LocationWithWeather for current location
-                    val currentLocationWithWeather = LocationWithWeather(
-                        location = currentLocationEntity,
-                        hourly = hourlyEntities,
-                        daily = dailyEntities
-                    )
-
-                    // Update state with current location
-                    _uiState.value = _uiState.value.copy(
-                        hasCurrentLocation = true,
-                        locations = listOf(currentLocationWithWeather) + _uiState.value.locations.filter {
-                            it.location.id != CURRENT_LOCATION_ID
-                        }
-                    )
-                }
+                // Update state with current location
+                _uiState.value = _uiState.value.copy(
+                    hasCurrentLocation = true,
+                    locations = listOf(currentLocationWithWeather) + _uiState.value.locations.filter {
+                        it.location.id != CURRENT_LOCATION_ID
+                    }
+                )
             }
         } catch (e: Exception) {
             Log.e("HomeViewModel", "Failed to fetch current location: ${e.message}")
