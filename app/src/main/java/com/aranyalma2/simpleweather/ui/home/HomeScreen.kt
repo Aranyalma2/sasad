@@ -1,11 +1,9 @@
 package com.aranyalma2.simpleweather.ui.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
@@ -70,7 +68,6 @@ fun HomeScreen(
                     onAddLocationClick = onNavigateToSearch
                 )
             } else {
-                // Use LazyVerticalGrid correctly with itemsIndexed
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.fillMaxSize(),
@@ -78,13 +75,15 @@ fun HomeScreen(
                 ) {
                     itemsIndexed(uiState.locations) { _, locationWithWeather ->
                         val location = locationWithWeather.location
-                        val weatherCode = locationWithWeather.hourly[0].weatherCode
+                        val weatherCode = locationWithWeather.hourly.firstOrNull()?.weatherCode ?: 0
+                        val isCurrentLocation = location.id == HomeViewModel.CURRENT_LOCATION_ID
 
                         LocationWeatherCard(
                             cityName = location.name,
                             country = location.country,
                             weatherCode = weatherCode,
-                            isFavorite = true, // This would be based on actual data
+                            isFavorite = true, // All saved locations are favorites
+                            isCurrentLocation = isCurrentLocation,
                             onFavoriteClick = { viewModel.toggleFavorite(location.id) },
                             onCardClick = { onNavigateToForecast(location.id) }
                         )

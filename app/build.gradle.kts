@@ -77,4 +77,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.compose)
 
+    implementation(libs.play.services.location)
+
 }

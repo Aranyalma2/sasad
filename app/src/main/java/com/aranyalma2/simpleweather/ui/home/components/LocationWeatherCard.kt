@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,10 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aranyalma2.simpleweather.ui.components.WeatherIcon
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import kotlin.time.TimeSource
 
 @Composable
 fun LocationWeatherCard(
@@ -25,6 +23,7 @@ fun LocationWeatherCard(
     country: String,
     weatherCode: Int,
     isFavorite: Boolean,
+    isCurrentLocation: Boolean = false,
     onFavoriteClick: () -> Unit,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -32,24 +31,23 @@ fun LocationWeatherCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp) // Added margin between cards
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { onCardClick() },
-        shape = MaterialTheme.shapes.small, // Rounded edges
+        shape = MaterialTheme.shapes.small,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp), // Zero margin inside the card
+                .padding(0.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Weather Icon: Full width, height proportional to aspect ratio
+            // Weather Icon
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp) // Height for the weather icon, adjust based on design needs
+                    .height(180.dp)
             ) {
-                // Weather icon filling the width of the box
                 val currentTime = LocalDateTime.now()
                 val isNight = currentTime.hour < 6 || currentTime.hour >= 20
                 WeatherIcon(
@@ -61,7 +59,7 @@ fun LocationWeatherCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Information under the picture: City name, country, and favorite icon
+            // Information: City name, country, and favorite/GPS icon
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -87,13 +85,22 @@ fun LocationWeatherCard(
                     )
                 }
 
-                // Favorite Icon
-                IconButton(onClick = onFavoriteClick) {
+                // GPS icon for current location, or Favorite icon for saved locations
+                if (isCurrentLocation) {
                     Icon(
-                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
-                        tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
+                        imageVector = Icons.Default.LocationOn,
+                        contentDescription = "Current Location",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
                     )
+                } else {
+                    IconButton(onClick = onFavoriteClick) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                            tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                 }
             }
 
@@ -101,6 +108,3 @@ fun LocationWeatherCard(
         }
     }
 }
-
-
-
