@@ -15,10 +15,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.util.Log
-import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
-import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
-import com.aranyalma2.simpleweather.data.model.CombinedWeather
-import com.aranyalma2.simpleweather.ui.home.HomeViewModel.Companion.CURRENT_LOCATION_ID
 
 data class LocationSearchItem(
     val id: Int = 0,
@@ -94,10 +90,11 @@ class SearchViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching for locations: ${e.localizedMessage}")
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Error searching for locations: ${e.localizedMessage}"
+                        error = "Unable to load locations. Check internet connection..."
                     )
                 }
             }
@@ -113,8 +110,8 @@ class SearchViewModel @Inject constructor(
             }
         }
 
+        //Add or Remove location
         if (location.isFavorite != true) addLocation(location) else removeLocation(location)
-        Log.d("Add to fav", location.isFavorite.toString())
 
         _uiState.update { it.copy(locations = updatedLocations) }
     }
@@ -142,8 +139,7 @@ class SearchViewModel @Inject constructor(
                 weatherDao.updateWeatherForLocation(locationId, weatherData)
 
             } catch (e: Exception) {
-                // Handle error
-                println("Error adding location: ${e.localizedMessage}")
+                Log.e("SearchViewModel", "Error adding location: ${e.localizedMessage}")
             }
         }
     }

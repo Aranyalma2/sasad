@@ -9,19 +9,13 @@ import com.aranyalma2.simpleweather.data.local.LocationWithWeather
 import com.aranyalma2.simpleweather.data.location.LocationProvider
 import com.aranyalma2.simpleweather.data.mapper.toDailyEntities
 import com.aranyalma2.simpleweather.data.mapper.toHourlyEntities
-import com.aranyalma2.simpleweather.data.model.CombinedWeather
-import com.aranyalma2.simpleweather.data.model.LocationData
-import com.aranyalma2.simpleweather.data.model.LocationResponse
 import com.aranyalma2.simpleweather.data.remote.LocationApiService
 import com.aranyalma2.simpleweather.data.remote.WeatherApiService
 import com.aranyalma2.simpleweather.data.repository.LocationRepository
 import com.aranyalma2.simpleweather.data.repository.WeatherRepository
 import com.aranyalma2.simpleweather.domain.repository.WeatherPersistenceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -45,11 +39,14 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    // For one-time UI events like snackbar messages
+    private val _snackbarMessage = MutableSharedFlow<String>()
+    val snackbarMessage: SharedFlow<String> = _snackbarMessage
+
     private val weatherRepository = WeatherRepository(weatherApi)
     private val locationRepository = LocationRepository(locationApi)
 
     companion object {
-        // Using a negative ID to ensure it doesn't conflict with database IDs
         const val CURRENT_LOCATION_ID = -1
     }
 
@@ -61,34 +58,24 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _uiState.value = _uiState.value.copy(isLoading = true)
-
-                // Load saved locations from Room database using suspend function
                 val locations = locationDao.getAllLocations()
 
-                // If no locations are saved, we could add default ones for first-time users
                 if (locations.isEmpty() && !_uiState.value.hasCurrentLocation) {
-                    _uiState.value = HomeUiState(
-                        isLoading = false
-                    )
+                    _uiState.value = HomeUiState(isLoading = false)
                     return@launch
                 }
 
                 val locationsWithWeather = mutableListOf<LocationWithWeather>()
 
-                // Add any existing current location to the top of the list
+                // Retain current location at top
                 if (_uiState.value.hasCurrentLocation && _uiState.value.locations.isNotEmpty()) {
-                    val currentLocationWeather = _uiState.value.locations.find {
-                        it.location.id == CURRENT_LOCATION_ID
-                    }
-                    currentLocationWeather?.let {
+                    _uiState.value.locations.find { it.location.id == CURRENT_LOCATION_ID }?.let {
                         locationsWithWeather.add(it)
                     }
                 }
 
-                // Add saved locations
                 for (location in locations) {
-                    val locationWithWeather = weatherDao.getLocationWithWeather(location.id)
-                    locationWithWeather?.let {
+                    weatherDao.getLocationWithWeather(location.id)?.let {
                         locationsWithWeather.add(it)
                     }
                 }
@@ -99,10 +86,10 @@ class HomeViewModel @Inject constructor(
                     hasCurrentLocation = _uiState.value.hasCurrentLocation
                 )
 
-                // Refresh weather data in background for all locations
                 refreshWeatherDataForAllLocations(locations)
 
             } catch (e: Exception) {
+                Log.e("HomeViewModel", "Failed to load locations: ${e.message}")
                 _uiState.value = HomeUiState(
                     isLoading = false,
                     error = "Failed to load locations: ${e.message}",
@@ -125,14 +112,11 @@ class HomeViewModel @Inject constructor(
                     longitude = location.longitude
                 )
 
-                // Get weather for current location
                 val weather = weatherRepository.getWeather(location.latitude, location.longitude)
 
-                // Convert to entities
                 val hourlyEntities = weather.toHourlyEntities(CURRENT_LOCATION_ID)
                 val dailyEntities = weather.toDailyEntities(CURRENT_LOCATION_ID)
 
-                // Create LocationWithWeather for current location
                 val currentLocationWithWeather = LocationWithWeather(
                     location = currentLocationEntity,
                     hourly = hourlyEntities,
@@ -143,7 +127,6 @@ class HomeViewModel @Inject constructor(
 
                 Log.d("curr", currentLocationWithWeather.toString())
 
-                // Update state with current location
                 _uiState.value = _uiState.value.copy(
                     hasCurrentLocation = true,
                     locations = listOf(currentLocationWithWeather) + _uiState.value.locations.filter {
@@ -157,35 +140,34 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun fetchAndSaveWeatherForLocation(locationId: Int, location: LocationEntity) {
-        try {
-            val weather = weatherRepository.getWeather(location.latitude, location.longitude)
-            weatherDao.updateWeatherForLocation(locationId, weather)
-        } catch (e: Exception) {
-            Log.e("HomeViewModel", "Unable to fetch weather for: ${location.name}", e)
-        }
+        val weather = weatherRepository.getWeather(location.latitude, location.longitude)
+        weatherDao.updateWeatherForLocation(locationId, weather)
     }
 
     fun refreshWeatherData(download: Boolean = true) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                // Try to update current location if we have permission
                 if (locationProvider.hasLocationPermission()) {
                     fetchCurrentLocation()
                 }
 
                 if (download) {
                     val locations = locationDao.getAllLocations()
-                    refreshWeatherDataForAllLocations(locations)
+                    try {
+                        refreshWeatherDataForAllLocations(locations)
+                    } catch (e: Exception) {
+                        Log.e("HomeViewModel", "Network error: ${e.message}")
+                        _snackbarMessage.emit("Network error. Showing saved data only.")
+                    }
                 }
 
-                // Reload data from database with fresh weather
                 loadSavedLocations()
+
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = "Failed to refresh weather data: ${e.message}"
-                )
+                Log.e("HomeViewModel", "Error refreshing data: ${e.message}")
+                _snackbarMessage.emit("Failed to refresh weather data.")
+                _uiState.value = _uiState.value.copy(isLoading = false)
             }
         }
     }
@@ -197,9 +179,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun toggleFavorite(locationId: Int) {
-        // Don't delete current location, it's not a saved location
         if (locationId == CURRENT_LOCATION_ID) return
-
         deleteLocation(locationId)
         refreshWeatherData(false)
     }
@@ -207,30 +187,24 @@ class HomeViewModel @Inject constructor(
     fun deleteLocation(locationId: Int) {
         viewModelScope.launch {
             try {
-                // Current location is not in the database, just remove from state
                 if (locationId == CURRENT_LOCATION_ID) {
-                    val updatedLocations = _uiState.value.locations.filter {
-                        it.location.id != CURRENT_LOCATION_ID
-                    }
                     _uiState.value = _uiState.value.copy(
-                        locations = updatedLocations,
+                        locations = _uiState.value.locations.filter {
+                            it.location.id != CURRENT_LOCATION_ID
+                        },
                         hasCurrentLocation = false
                     )
                     return@launch
                 }
 
-                // Delete from database for saved locations
                 locationDao.deleteLocation(locationId)
-
-                // Update the UI state to remove this location
-                val updatedLocations = _uiState.value.locations.filter {
-                    it.location.id != locationId
-                }
-
                 _uiState.value = _uiState.value.copy(
-                    locations = updatedLocations
+                    locations = _uiState.value.locations.filter {
+                        it.location.id != locationId
+                    }
                 )
             } catch (e: Exception) {
+                Log.e("HomeViewModel", "Failed to delete location: ${e.message}")
                 _uiState.value = _uiState.value.copy(
                     error = "Failed to delete location: ${e.message}"
                 )

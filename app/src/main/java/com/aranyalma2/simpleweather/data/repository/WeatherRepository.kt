@@ -20,7 +20,7 @@ class WeatherRepository @Inject constructor(
             timezone = "auto",
             forecastDays = 7
         )
-
+        Log.v("WeatherRepository", response.toString())
         return CombinedWeather(response.toDaily(), response.toHourly())
     }
 }
