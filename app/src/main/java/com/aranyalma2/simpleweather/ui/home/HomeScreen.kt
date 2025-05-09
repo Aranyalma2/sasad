@@ -9,10 +9,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aranyalma2.simpleweather.ui.home.components.LocationWeatherCard
 import com.aranyalma2.simpleweather.util.PermissionHandler
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,15 +34,24 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // State for the confirmation dialog
     var showDeleteConfirmation by remember { mutableStateOf(false) }
     var locationToDelete by remember { mutableStateOf<Int?>(null) }
     var locationNameToDelete by remember { mutableStateOf("") }
 
-    // Request location permission when the screen is first shown
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    // Collect snackbar messages
+    LaunchedEffect(Unit) {
+        viewModel.snackbarMessage.collect { message ->
+            scope.launch {
+                snackbarHostState.showSnackbar(message)
+            }
+        }
+    }
+
     PermissionHandler.RequestLocationPermission(
         onPermissionGranted = {
-            // Permission granted, fetch current location weather
             viewModel.refreshWeatherData()
         }
     )
@@ -72,6 +84,9 @@ fun HomeScreen(
                     contentDescription = "Add Location"
                 )
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
     ) { paddingValues ->
         Box(
@@ -106,7 +121,6 @@ fun HomeScreen(
                             isFavorite = true,
                             isCurrentLocation = isCurrentLocation,
                             onFavoriteClick = {
-                                // Show confirmation dialog instead of immediate deletion
                                 locationToDelete = location.id
                                 locationNameToDelete = location.name
                                 showDeleteConfirmation = true
@@ -114,16 +128,6 @@ fun HomeScreen(
                             onCardClick = { onNavigateToForecast(location.id) }
                         )
                     }
-                }
-            }
-
-            uiState.error?.let { error ->
-                Snackbar(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .align(Alignment.BottomCenter)
-                ) {
-                    Text(error)
                 }
             }
 

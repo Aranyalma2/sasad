@@ -17,11 +17,7 @@ class WeatherPersistenceRepository @Inject constructor(
     private val weatherDao: WeatherDao,
 ) {
     private var currentLocationWeather: LocationWithWeather? = null
-    /**
-     * Updates the weather data for a specific location by:
-     * 1. Deleting existing hourly and daily data for that location
-     * 2. Inserting the new weather data
-     */
+
     suspend fun updateWeatherForLocation(locationId: Int, weather: CombinedWeather) = withContext(Dispatchers.IO) {
         // Convert weather data to entities
         val hourlyEntities = weather.toHourlyEntities(locationId)
@@ -36,9 +32,6 @@ class WeatherPersistenceRepository @Inject constructor(
         weatherDao.insertDailyWeather(dailyEntities)
     }
 
-    /**
-     * Gets a location with its associated weather data
-     */
     suspend fun getLocationWithWeather(locationId: Int): LocationWithWeather? {
         return weatherDao.getLocationWithWeather(locationId.toLong())
     }

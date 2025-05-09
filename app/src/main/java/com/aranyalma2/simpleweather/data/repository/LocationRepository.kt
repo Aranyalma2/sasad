@@ -16,6 +16,7 @@ class LocationRepository @Inject constructor(
             language = "en",
             format = "json"
         )
+        Log.v("LocationRepository", response.toString())
         return response.toLocationEntities()
     }
 }

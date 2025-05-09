@@ -18,7 +18,7 @@ import java.time.format.TextStyle
 import java.util.*
 
 @Composable
-fun DailyForecastCard(dailyWeather: List<DailyWeather>) {
+fun DailyForecastList(dailyWeather: List<DailyWeather>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

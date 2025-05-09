@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aranyalma2.simpleweather.ui.components.WeatherIconBlurred
-import com.aranyalma2.simpleweather.ui.forecast.components.DailyForecastCard
+import com.aranyalma2.simpleweather.ui.forecast.components.DailyForecastList
 import com.aranyalma2.simpleweather.ui.forecast.components.HourlyForecastList
 import com.aranyalma2.simpleweather.ui.forecast.components.WeatherStat
 import java.time.LocalDateTime
@@ -114,7 +114,7 @@ fun ForecastContent(uiState: ForecastUiState) {
 
         // Daily forecast
         if (uiState.dailyWeather.isNotEmpty()) {
-            DailyForecastCard(dailyWeather = uiState.dailyWeather)
+            DailyForecastList(dailyWeather = uiState.dailyWeather)
         }
 
         // Add some space at the bottom
